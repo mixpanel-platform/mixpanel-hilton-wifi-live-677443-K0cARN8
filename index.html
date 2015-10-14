@@ -41,6 +41,11 @@
     <script type="text/javascript">
       /* Upload and Store data client-side */
       
+      document.getElementById("uploadBtn").onchange = function () {
+        document.getElementById("uploadFile").value = this.value;
+        console.log(this.value);
+      };
+      
     
       $(document).ready(function() {
           $.ajax({
@@ -68,5 +73,6 @@
           // alert(lines);
       }
     </script>
+    
   </body>
 </html>
