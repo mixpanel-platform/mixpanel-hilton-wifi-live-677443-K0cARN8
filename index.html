@@ -48,30 +48,40 @@
       };
       
     
-      $(document).ready(function() {
-          $.ajax({
-              type: "GET",
-              url: "data.txt",
-              dataType: "text",
-              success: function(data) {processData(data);}
-           });
-      });
+      // The event listener for the file upload
+      document.getElementById('uploadBtn').addEventListener('change', upload, false);
 
-      function processData(allText) {
-          var record_num = 5;  // or however many elements there are in each row
-          var allTextLines = allText.split(/\r\n|\n/);
-          var entries = allTextLines[0].split(',');
-          var lines = [];
-      
-          var headings = entries.splice(0,record_num);
-          while (entries.length>0) {
-              var tarr = [];
-              for (var j=0; j<record_num; j++) {
-                  tarr.push(headings[j]+":"+entries.shift());
-              }
-              lines.push(tarr);
+      // Method that checks that the browser supports the HTML5 File API
+      function browserSupportFileUpload() {
+          var isCompatible = false;
+          if (window.File && window.FileReader && window.FileList && window.Blob) {
+          isCompatible = true;
           }
-          // alert(lines);
+          return isCompatible;
+      }
+  
+      // Method that reads and processes the selected file
+      function upload(evt) {
+      if (!browserSupportFileUpload()) {
+          alert('The File APIs are not fully supported in this browser!');
+          } else {
+              var data = null;
+              var file = evt.target.files[0];
+              var reader = new FileReader();
+              reader.readAsText(file);
+              reader.onload = function(event) {
+                  var csvData = event.target.result;
+                  data = $.csv.toArrays(csvData);
+                  if (data && data.length > 0) {
+                    alert('Imported -' + data.length + '- rows successfully!');
+                  } else {
+                      alert('No data to import!');
+                  }
+              };
+              reader.onerror = function() {
+                  alert('Unable to read ' + file.fileName);
+              };
+          }
       }
     </script>
     
