@@ -69,8 +69,10 @@
               var file = evt.target.files[0];
               var reader = new FileReader();
               reader.readAsText(file);
+              
               reader.onload = function(event) {
                   var csvData = event.target.result;
+                  console.log(csvData);
                   data = $.csv.toArrays(csvData);
                   if (data && data.length > 0) {
                     alert('Imported -' + data.length + '- rows successfully!');
