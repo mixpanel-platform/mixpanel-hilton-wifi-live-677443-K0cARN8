@@ -7,9 +7,23 @@
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
   </head>
   <body class="mixpanel-platform-body">
-    <h1>Hello, World!</h1>
-    <script>
-      // Run queries and display results here
+    
+    <script type="text/javascript">
+      var allText =[];
+      var allTextLines = [];
+      var Lines = [];
+  
+      var txtFile = new XMLHttpRequest();
+      txtFile.open("GET", "file://d:/data.txt", true);
+      txtFile.onreadystatechange = function()
+      {
+          allText = txtFile.responseText;
+          allTextLines = allText.split(/\r\n|\n/);
+      };
+  
+      document.write(allTextLines);<br>
+      document.write(allText);<br>
+      document.write(txtFile);<br>
     </script>
   </body>
 </html>
