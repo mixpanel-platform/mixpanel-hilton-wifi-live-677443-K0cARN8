@@ -72,6 +72,8 @@
               var transactionDateColumn;
               var transactionAmountColumn;
               var header;
+              var csvArray;
+              var chartData;
               var data = null;
               var file = evt.target.files[0];
               var reader = new FileReader();
@@ -89,8 +91,11 @@
                   
                       if (data && data.length > 0) {
                         /* Create a dictionary with the transaction date and transaction amount */
-                        
-                        
+                        csvArray = data.slice(1, data.length);
+                        _.each(csvArray, function(arr){
+                            chartData[arr[transactionDateColumn]] = arr[transactionAmountColumn];
+                        });
+                        console.log(chartData);
                           
                       } else {
                         /* alert('No data to import!'); */
