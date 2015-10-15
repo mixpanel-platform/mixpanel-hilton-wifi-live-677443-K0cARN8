@@ -24,18 +24,24 @@
           opacity: 0;
           filter: alpha(opacity=0);
       }
-      .form-control {
-        display: inline-block;
-      }
     </style>
   </head>
   <body class="mixpanel-platform-body">
+     <div class="mixpanel-platform-section">
+      <div id="eventSelect" style="float: left;"></div>
+      <div id="by" class="mixpanel-platform-label" style="margin-left: 10px; display: none;">by</div>
+      <div id="propSelect" style="float: left;"></div>
+      <div id="dateSelect" style="float: right;"></div>
+      <div style="clear: both;"></div>
+      <div id="graph"></div>
+    </div>
     
     <input id="uploadFile" placeholder="Choose File" disabled="disabled" class="" />
     <div class="fileUpload btn btn-primary">
         <span>Upload</span>
         <input id="uploadBtn" type="file" class="upload" placeholder="Upload File" />
     </div>
+   
     <!-- 
       1. Upload CSV's with revenue data.  Parse out transaction date (trans_date) and transaction amount
       (sale_amount) 
@@ -44,6 +50,34 @@
     
     -->
     <script type="text/javascript">
+      var eventSelect = $('#eventSelect').MPEventSelect();
+      var propSelect  = $('#propSelect').MPPropertySelect();
+      var dateSelect  = $('#dateSelect').MPDatepicker();
+      var eventGraph  = $('#graph').MPChart({chartType: 'line'});
+      var eventTable  = $('#table').MPTable({
+        showPercentages: true,
+        firstColHeader: 'Event'
+      });
+
+      var runQuery = function() {
+        var eventName = eventSelect.MPEventSelect('value'),
+            propName  = propSelect.MPPropertySelect('value'),
+            dateRange = dateSelect.MPDatepicker('value');
+
+        if (eventName) {
+          MP.api.segment(eventName, propName, dateRange).done(function(results) {
+            eventGraph.MPChart('setData', results);
+          });
+        }
+      };
+      eventSelect.on('change', function(e, eventName) {
+        propSelect.MPPropertySelect('setEvent', eventName);
+        $("#by").show();
+        runQuery();
+      });
+      propSelect.on('change', runQuery);
+      dateSelect.on('change', runQuery);
+      
       /* Upload and Store data client-side */
       
       document.getElementById("uploadBtn").onchange = function () {
@@ -94,7 +128,7 @@
                         /* Create a dictionary with the transaction date and transaction amount */
                         csvArray = data.slice(1, data.length);
                         _.each(csvArray, function(arr){
-                            chartData[arr[transactionDateColumn].split(' ')[0]] = arr[transactionAmountColumn];
+                            chartData[arr[transactionDateColumn].split(' ')[0]] = parseInt(arr[transactionAmountColumn]);
                         });
                         console.log(chartData);
                           
