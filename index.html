@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.css">
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
     <style>
       .fileUpload {
           position: relative;
@@ -73,6 +74,7 @@
               reader.onload = function(event) {
                   var csvData = event.target.result;
                   console.log(csvData);
+                  
                   data = $.csv.toArrays(csvData);
                   if (data && data.length > 0) {
                     alert('Imported -' + data.length + '- rows successfully!');
