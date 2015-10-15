@@ -73,7 +73,7 @@
               var transactionAmountColumn;
               var header;
               var csvArray;
-              var chartData;
+              var chartData = {};
               var data = null;
               var file = evt.target.files[0];
               var reader = new FileReader();
@@ -83,17 +83,18 @@
                   var csvData = event.target.result;
                   data = $.csv.toArrays(csvData);
                   header = data[0];
-                  if (header.indexOf('trans_date') >= 0 && header.indexOf('trans_amount') >= 0) {
+                  console.log(header)
+                  if (header.indexOf('trans_date') >= 0 && header.indexOf('sale_amount') >= 0) {
                       transactionDateColumn = header.indexOf('trans_date');
                       transactionAmountColumn =   header.indexOf('trans_amount');
                       
-                       console.log(data)
+                      console.log(data)
                   
                       if (data && data.length > 0) {
                         /* Create a dictionary with the transaction date and transaction amount */
                         csvArray = data.slice(1, data.length);
                         _.each(csvArray, function(arr){
-                            chartData[arr[transactionDateColumn]] = arr[transactionAmountColumn];
+                            chartData[arr[transactionDateColumn].split(' ')[0]] = arr[transactionAmountColumn];
                         });
                         console.log(chartData);
                           
