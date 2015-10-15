@@ -24,14 +24,17 @@
           opacity: 0;
           filter: alpha(opacity=0);
       }
+      .form-control {
+        display: inline-block;
+      }
     </style>
   </head>
   <body class="mixpanel-platform-body">
     
-    <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
+    <input id="uploadFile" placeholder="Choose File" disabled="disabled" class="" />
     <div class="fileUpload btn btn-primary">
         <span>Upload</span>
-        <input id="uploadBtn" type="file" class="upload form-control" placeholder="Upload File" />
+        <input id="uploadBtn" type="file" class="upload" placeholder="Upload File" />
     </div>
     <!-- 
       1. Upload CSV's with revenue data.  Parse out transaction date (trans_date) and transaction amount
@@ -78,18 +81,22 @@
                   var csvData = event.target.result;
                   data = $.csv.toArrays(csvData);
                   header = data[0];
-                  
-                  transactionDateColum
-                  console.log(data)
-                  
-                  if (data && data.length > 0) {
-                    /* alert('Imported -' + data.length + '- rows successfully!'); */
-                    /* Create a dictionary with the transaction date and transaction amount */
-                    
+                  if (header.indexOf('trans_date') >= 0 && header.indexOf('trans_amount') >= 0) {
+                      transactionDateColumn = header.indexOf('trans_date');
+                      transactionAmountColumn =   header.indexOf('trans_amount');
                       
-                  } else {
-                    /* alert('No data to import!'); */
+                       console.log(data)
+                  
+                      if (data && data.length > 0) {
+                        /* Create a dictionary with the transaction date and transaction amount */
+                        
+                        
+                          
+                      } else {
+                        /* alert('No data to import!'); */
+                      }
                   }
+                 
               };
               reader.onerror = function() {
                   alert('Unable to read ' + file.fileName);
