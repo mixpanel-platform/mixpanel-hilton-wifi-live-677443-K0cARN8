@@ -73,13 +73,13 @@
               
               reader.onload = function(event) {
                   var csvData = event.target.result;
-                  console.log(csvData);
-                  
                   data = $.csv.toArrays(csvData);
+                  console.log(data)
+                  
                   if (data && data.length > 0) {
-                    alert('Imported -' + data.length + '- rows successfully!');
+                    /* alert('Imported -' + data.length + '- rows successfully!'); */
                   } else {
-                      alert('No data to import!');
+                    /* alert('No data to import!'); */
                   }
               };
               reader.onerror = function() {
