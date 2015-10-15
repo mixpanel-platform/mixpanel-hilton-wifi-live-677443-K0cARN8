@@ -31,7 +31,7 @@
     <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
     <div class="fileUpload btn btn-primary">
         <span>Upload</span>
-        <input id="uploadBtn" type="file" class="upload" />
+        <input id="uploadBtn" type="file" class="upload form-control" placeholder="Upload File" />
     </div>
     <!-- 
       1. Upload CSV's with revenue data.  Parse out transaction date (trans_date) and transaction amount
@@ -66,6 +66,9 @@
       if (!browserSupportFileUpload()) {
           alert('The File APIs are not fully supported in this browser!');
           } else {
+              var transactionDateColumn;
+              var transactionAmountColumn;
+              var header;
               var data = null;
               var file = evt.target.files[0];
               var reader = new FileReader();
@@ -74,10 +77,16 @@
               reader.onload = function(event) {
                   var csvData = event.target.result;
                   data = $.csv.toArrays(csvData);
+                  header = data[0];
+                  
+                  transactionDateColum
                   console.log(data)
                   
                   if (data && data.length > 0) {
                     /* alert('Imported -' + data.length + '- rows successfully!'); */
+                    /* Create a dictionary with the transaction date and transaction amount */
+                    
+                      
                   } else {
                     /* alert('No data to import!'); */
                   }
