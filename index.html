@@ -65,9 +65,10 @@
 
       var runQuery = function(data) {
         var eventName = eventSelect.MPEventSelect('value'),
-            propName  = propSelect.MPPropertySelect('value'),
+            propName  = ''
             dateRange = dateSelect.MPDatepicker('value');
 
+        console.log(data);
         if (eventName) {
           MP.api.segment(eventName, propName, dateRange).done(function(results) {
             eventGraph.MPChart('setData', results);
@@ -86,7 +87,7 @@
       
       document.getElementById("uploadBtn").onchange = function () {
         document.getElementById("uploadFile").value = this.value;
-        console.log(this.value);
+
       };
       
     
@@ -121,12 +122,12 @@
                   var csvData = event.target.result;
                   data = $.csv.toArrays(csvData);
                   header = data[0];
-                  console.log(header)
+                 
                   if (header.indexOf('trans_date') >= 0 && header.indexOf('sale_amount') >= 0) {
                       transactionDateColumn = header.indexOf('trans_date');
                       transactionAmountColumn =  header.indexOf('sale_amount');
                       
-                      console.log(data)
+                 
                   
                       if (data && data.length > 0) {
                         /* Create a dictionary with the transaction date and transaction amount */
@@ -135,6 +136,7 @@
                             chartData[arr[transactionDateColumn].split(' ')[0]] = parseInt(arr[transactionAmountColumn]);
                         });
                         console.log(chartData);
+                        runQuery(chartData);
                           
                       } else {
                         /* alert('No data to import!'); */
