@@ -64,17 +64,37 @@
       });
 
       var runQuery = function(data) {
+        console.log(data)
         var eventName = eventSelect.MPEventSelect('value'),
             propName  = ''
             dateRange = dateSelect.MPDatepicker('value');
-
-        console.log(data);
-        if (eventName) {
-          MP.api.segment(eventName, propName, dateRange).done(function(results) {
-            eventGraph.MPChart('setData', results);
-            console.log(results);
-          });
-        }
+        
+        MP.api.segment(eventName, {from: moment().subtract(30, 'days'), unit: 'day'}).done(function(results){
+          if (eventName) {
+            var finalData = {
+              eventName:{}
+            }
+              var resultData = results.values()[eventName];
+              if (data){
+              _.each(_.keys(resultData), function(key){
+                  if (key in data){
+                    finalData[eventName][key] = resultData[eventName] / chartData[key];
+                  } else {
+                    finalData[eventName][key] = resultdata[key]
+                  }
+                  
+              });
+              
+                eventGraph.MPChart('setData', finalData);
+            }
+            else {
+                console.log(finalData)
+                eventGraph.MPChart('setData', results);
+            }
+          }
+          
+        });
+        
       };
       eventSelect.on('change', function(e, eventName) {
         propSelect.MPPropertySelect('setEvent', eventName);
@@ -84,10 +104,13 @@
       dateSelect.on('change', runQuery);
       
       /* Upload and Store data client-side */
+      function toTitleCase(str)
+      {
+          return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+      }
       
       document.getElementById("uploadBtn").onchange = function () {
-        document.getElementById("uploadFile").value = this.value;
-
+        document.getElementById("uploadFile").value = toTitleCase(this.value.split("\\")[this.value.split("\\").length - 1]);
       };
       
     
@@ -122,12 +145,12 @@
                   var csvData = event.target.result;
                   data = $.csv.toArrays(csvData);
                   header = data[0];
-                 
+                  console.log(header)
                   if (header.indexOf('trans_date') >= 0 && header.indexOf('sale_amount') >= 0) {
                       transactionDateColumn = header.indexOf('trans_date');
                       transactionAmountColumn =  header.indexOf('sale_amount');
                       
-                 
+                      console.log(data)
                   
                       if (data && data.length > 0) {
                         /* Create a dictionary with the transaction date and transaction amount */
