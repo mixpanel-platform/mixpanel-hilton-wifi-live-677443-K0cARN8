@@ -71,12 +71,12 @@
         if (eventName) {
           MP.api.segment(eventName, propName, dateRange).done(function(results) {
             eventGraph.MPChart('setData', results);
+            console.log(results);
           });
         }
       };
       eventSelect.on('change', function(e, eventName) {
         propSelect.MPPropertySelect('setEvent', eventName);
-        $("#by").show();
         runQuery();
       });
       propSelect.on('change', runQuery);
