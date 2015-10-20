@@ -12,7 +12,8 @@
           position: relative;
           overflow: hidden;
           margin: 10px;
-          left: 43.5%;
+           left: 30%;
+          cursor:pointer;
       }
       .fileUpload input.upload {
           position: absolute;
@@ -24,8 +25,9 @@
           cursor: pointer;
           opacity: 0;
           filter: alpha(opacity=0);
-          left:43.5%;
+         
       }
+     
  
       .select_button {
         height: 100% !important;
@@ -103,10 +105,10 @@
     </div>
     
     <div class='csvUpload'>
-        <!--<input id="uploadFile" placeholder="Choose File" disabled="disabled" class="" />-->
+        <input style="opacity:0" id="uploadFile" placeholder="Choose File" disabled="disabled" class="" />
         <div class="fileUpload btn btn-primary">
             <span>Upload CSV</span>
-            <!--<input id="uploadBtn" type="file" class="upload" placeholder="Upload File" />-->
+            <input id="uploadBtn" type="file" class="upload" placeholder="Upload File" />
         </div>
     </div>
     <!-- 
@@ -143,7 +145,7 @@
                   if (key in data){
                     finalData[eventName][key] = resultData[eventName] / chartData[key];
                   } else {
-                    finalData[eventName][key] = resultdata[key]
+                    finalData[eventName][key] = resultData[key]
                   }
                   
               });
@@ -223,7 +225,11 @@
                         });
                         console.log(chartData);
                         runQuery(chartData);
-                        sumTransactionData();
+                        
+                        /* Add both of these to number circle */
+                        var avgTransactionData = avg(_.values(chartData));
+                        
+                        var totalTransactionData = sum(_.values(chartData));
                           
                       } else {
                         /* alert('No data to import!'); */
@@ -235,6 +241,17 @@
                   alert('Unable to read ' + file.fileName);
               };
           }
+      }
+      
+      function sum(arr) {
+          return  _.reduce(ar, function(sum, el) {
+            return sum + el
+          }, 0)
+      }
+      function avg(arr) {
+        return _.reduce(arr, function(memo, num) {
+            return memo + num;
+        }, 0) / (arr.length === 0 ? 1 : arr.length);
       }
       
       function sumTransactionData() {
