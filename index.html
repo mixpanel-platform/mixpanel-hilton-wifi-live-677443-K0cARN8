@@ -12,7 +12,7 @@
           position: relative;
           overflow: hidden;
           margin: 10px;
-          left: 45%;
+          left: 43.5%;
       }
       .fileUpload input.upload {
           position: absolute;
@@ -24,11 +24,9 @@
           cursor: pointer;
           opacity: 0;
           filter: alpha(opacity=0);
-          left:40%;
+          left:43.5%;
       }
-      #uploadFile {
-        left:40%;
-      }
+ 
       .select_button {
         height: 100% !important;
       }
@@ -105,9 +103,9 @@
     </div>
     
     <div class='csvUpload'>
-        <input id="uploadFile" placeholder="Choose File" disabled="disabled" class="" />
+        <!--<input id="uploadFile" placeholder="Choose File" disabled="disabled" class="" />-->
         <div class="fileUpload btn btn-primary">
-            <span>Upload CSV File</span>
+            <span>Upload CSV</span>
             <!--<input id="uploadBtn" type="file" class="upload" placeholder="Upload File" />-->
         </div>
     </div>
@@ -225,6 +223,7 @@
                         });
                         console.log(chartData);
                         runQuery(chartData);
+                        sumTransactionData();
                           
                       } else {
                         /* alert('No data to import!'); */
@@ -236,6 +235,12 @@
                   alert('Unable to read ' + file.fileName);
               };
           }
+      }
+      
+      function sumTransactionData() {
+          
+        
+        
       }
     </script>
     
