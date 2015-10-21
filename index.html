@@ -145,6 +145,8 @@
                   if (key in data){
                     finalData[eventName][key] = resultData[eventName] / chartData[key];
                   } else {
+                    console.log(finalData);
+                    debugger;
                     finalData[eventName][key] = resultData[key]
                   }
                   
@@ -244,7 +246,7 @@
       }
       
       function sum(arr) {
-          return  _.reduce(ar, function(sum, el) {
+          return  _.reduce(arr, function(sum, el) {
             return sum + el
           }, 0)
       }
