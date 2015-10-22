@@ -99,7 +99,7 @@
               <div class="numberCircle center-block"></div>
           </div>
           <div class="avg-monthly-visits circle-div">
-              <span class="span-css center-block">AVG Revenue Per Day</span>
+              <span class="span-css center-block">AVG Revenue Per Transaction</span>
               <div class="numberCircle center-block"></div>
         </div>
     </div>
@@ -136,27 +136,38 @@
         
         MP.api.segment(eventName, {from: moment().subtract(30, 'days'), unit: 'day'}).done(function(results){
           if (eventName) {
-            var finalData = {
-              eventName:{}
-            }
-              var resultData = results.values()[eventName];
-              if (data){
+            var finalData = {};
+           
+            finalData[eventName] = {}
+            
+            var resultData = results.values()[eventName];
+            
+            console.log(data);
+            if (data){
               _.each(_.keys(resultData), function(key){
+                  console.log(key);
+                  console.log(resultData[key]);
+                  console.log(finalData[eventName]);
                   if (key in data){
-                    finalData[eventName][key] = resultData[eventName] / chartData[key];
+                    console.log("in");
+                    console.log(key);
+                    console.log(data);
+                    console.log(finalData)
+                    console.log(resultData)
+                    if (key in resultData) {
+                      finalData[eventName][key] = resultData[key] / data[key];
+                    } else {
+                      finalData[eventName][key] = resultData[key]
+                    }
                   } else {
-                    console.log(finalData);
-                    debugger;
                     finalData[eventName][key] = resultData[key]
                   }
-                  
               });
-              
-                eventGraph.MPChart('setData', finalData);
+            
+              eventGraph.MPChart('setData', finalData);
             }
             else {
-                console.log(finalData)
-                eventGraph.MPChart('setData', results);
+              eventGraph.MPChart('setData', results);
             }
           }
           
@@ -225,13 +236,21 @@
                         _.each(csvArray, function(arr){
                             chartData[arr[transactionDateColumn].split(' ')[0]] = parseInt(arr[transactionAmountColumn]);
                         });
-                        console.log(chartData);
-                        runQuery(chartData);
+                        
                         
                         /* Add both of these to number circle */
                         var avgTransactionData = avg(_.values(chartData));
-                        
+                        var flooredAvg = Math.round(avgTransactionData * 100) / 100
                         var totalTransactionData = sum(_.values(chartData));
+                        var flooredTransaction = Math.round(totalTransactionData * 100) / 100
+                        var circle = $('.app-launches > .numberCircle')
+                        circle.text(flooredTransaction.toString())
+                        
+                        var secondCircle = $('.avg-monthly-visits > .numberCircle')
+                        secondCircle.text(flooredAvg.toString())
+                        
+                        console.log(chartData);
+                        runQuery(chartData);
                           
                       } else {
                         /* alert('No data to import!'); */
