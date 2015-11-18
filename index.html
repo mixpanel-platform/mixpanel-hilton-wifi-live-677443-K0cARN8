@@ -135,7 +135,8 @@
       });
 
       var runQuery = function(data) {
-        console.log(data)
+        /* If there's revenue data that we've imported, let's plot it */
+        
         var eventName = eventSelect.MPEventSelect('value'),
             propName  = ''
             dateRange = dateSelect.MPDatepicker('value');
@@ -151,15 +152,9 @@
             console.log(data);
             if (data){
               _.each(_.keys(resultData), function(key){
-                  console.log(key);
-                  console.log(resultData[key]);
-                  console.log(finalData[eventName]);
+                  
                   if (key in data){
-                    console.log("in");
-                    console.log(key);
-                    console.log(data);
-                    console.log(finalData)
-                    console.log(resultData)
+                   
                     if (key in resultData) {
                       finalData[eventName][key] = resultData[key] / data[key];
                     } else {
@@ -234,7 +229,7 @@
                       transactionDateColumn = header.indexOf('trans_date');
                       transactionAmountColumn =  header.indexOf('sale_amount');
                       
-                      console.log(data)
+             
                   
                       if (data && data.length > 0) {
                         /* Create a dictionary with the transaction date and transaction amount */
