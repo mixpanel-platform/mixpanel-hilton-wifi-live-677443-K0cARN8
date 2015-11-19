@@ -120,6 +120,16 @@
       1. Pull properties dynamically from CSV (Revenue and Transaction Date)
       2. Graph them inside of the chart
       3. Add better icons to Represent Revenue Avgs's & Sums
+      {
+        'Track': {
+            '2010-05-30': 10,
+            '2010-05-31': 110
+         },
+         'Purchase': {
+             '2010-05-30': 3,
+             '2010-05-31': 32
+         }
+      }
     -->
     <script type="text/javascript">
       var eventSelect = $('#eventSelect').MPEventSelect();
@@ -133,34 +143,32 @@
 
       var runQuery = function(data) {
         /* If there's revenue data that we've imported, let's plot it */
-        
+      
         var eventName = eventSelect.MPEventSelect('value'),
             propName  = ''
             dateRange = dateSelect.MPDatepicker('value');
         
-        MP.api.segment(eventName, {from: moment().subtract(30, 'days'), unit: 'day'}).done(function(results){
+        console.log(eventName);
+        console.log(dateRange.from, dateRange.to);
+        MP.api.segment(eventName, {from: dateRange.from, to:dateRange.to, unit: 'day'}).done(function(results){
           debugger;
-          if (eventName) {
+          if (eventName && data.type != 'change') {
             var finalData = {};
            
             finalData[eventName] = {}
             
             var resultData = results.values()[eventName];
-            debugger;
+  
             console.log(data);
+            console.log(typeof(data))
             if (data){
               _.each(_.keys(resultData), function(key){
-                  
-                  if (key in data){
-                   
-                    if (key in resultData) {
-                      finalData[eventName][key] = resultData[key] / data[key];
-                    } else {
-                      finalData[eventName][key] = resultData[key]
-                    }
-                  } else {
-                    finalData[eventName][key] = resultData[key]
-                  }
+                  finalData[eventName][key] = resultData[key]
+              });
+              finalData['Revenue'] = {}
+              
+              _.each(_.keys(finalData), function(key){
+                  finalData['Revenue'][key] = finalData[key]
               });
             
               eventGraph.MPChart('setData', finalData);
@@ -168,7 +176,9 @@
             else {
               eventGraph.MPChart('setData', results);
             }
-          }
+          } else {
+            eventGraph.MPChart('setData', results);
+          } 
           
         });
         
