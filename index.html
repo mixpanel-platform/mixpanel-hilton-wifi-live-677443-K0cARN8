@@ -152,12 +152,13 @@
         console.log(dateRange.from, dateRange.to);
         MP.api.segment(eventName, {from: dateRange.from, to:dateRange.to, unit: 'day'}).done(function(results){
           
-          finalData = {}
+          var finalData = {}
+          var resultData = {}
           if (eventName && _.keys(data).indexOf('Revenue') >= 0) {
 
             finalData[eventName] = {}
             
-            var resultData = results.values()[eventName];
+            resultData[eventName] = results.values()[eventName];
   
             console.log(data);
             console.log(typeof(data))
@@ -168,7 +169,7 @@
               
               debugger;
               _.each(_.keys(data['Revenue']), function(key){
-                  finalData['Revenue'][key] = finalData[key]
+                  finalData['Revenue'][key] = data['Revenue'][key]
               });
               debugger;
               eventGraph.MPChart('setData', finalData);
