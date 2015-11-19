@@ -169,7 +169,6 @@
               });
               
               _.each(_.keys(data['Revenue']), function(key){
-                debugger;
                   finalData['Revenue'][key] = data['Revenue'][key]
               });
 
@@ -217,6 +216,7 @@
   
       // Method that reads and processes the selected file
       function upload(evt) {
+        console.log('here')
       if (!browserSupportFileUpload()) {
           alert('The File APIs are not fully supported in this browser!');
           } else {
@@ -241,8 +241,6 @@
                       transactionDateColumn = header.indexOf('trans_date');
                       transactionAmountColumn =  header.indexOf('sale_amount');
                       
-             
-                  
                       if (data && data.length > 0) {
                         /* Create a dictionary with the transaction date and transaction amount */
                         csvArray = data.slice(1, data.length);
@@ -252,9 +250,9 @@
                         
                         
                         /* Add both of these to number circle */
-                        var avgTransactionData = avg(_.values(chartData));
+                        var avgTransactionData = avg(_.values(chartData['Revenue']));
                         var flooredAvg = Math.round(avgTransactionData * 100) / 100
-                        var totalTransactionData = sum(_.values(chartData));
+                        var totalTransactionData = sum(_.values(chartData['Revenue']));
                         var flooredTransaction = Math.round(totalTransactionData * 100) / 100
                         var circle = $('.app-launches > .numberCircle')
                         circle.text(flooredTransaction.toString())
