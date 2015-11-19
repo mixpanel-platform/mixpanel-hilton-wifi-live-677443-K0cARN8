@@ -139,6 +139,7 @@
             dateRange = dateSelect.MPDatepicker('value');
         
         MP.api.segment(eventName, {from: moment().subtract(30, 'days'), unit: 'day'}).done(function(results){
+          debugger;
           if (eventName) {
             var finalData = {};
            
