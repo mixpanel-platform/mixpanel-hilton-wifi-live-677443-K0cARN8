@@ -151,10 +151,10 @@
         console.log(eventName);
         console.log(dateRange.from, dateRange.to);
         MP.api.segment(eventName, {from: dateRange.from, to:dateRange.to, unit: 'day'}).done(function(results){
-          debugger;
-          if (eventName && data.type != 'change') {
-            var finalData = {};
-           
+          
+          finalData = {}
+          if (eventName && _.keys(data).indexOf('Revenue') >= 0) {
+
             finalData[eventName] = {}
             
             var resultData = results.values()[eventName];
@@ -165,12 +165,12 @@
               _.each(_.keys(resultData), function(key){
                   finalData[eventName][key] = resultData[key]
               });
-              finalData['Revenue'] = {}
               
-              _.each(_.keys(finalData), function(key){
+              debugger;
+              _.each(_.keys(data['Revenue']), function(key){
                   finalData['Revenue'][key] = finalData[key]
               });
-            
+              debugger;
               eventGraph.MPChart('setData', finalData);
             }
             else {
@@ -222,7 +222,9 @@
               var transactionAmountColumn;
               var header;
               var csvArray;
-              var chartData = {};
+              var chartData = {
+                'Revenue': {}
+              };
               var data = null;
               var file = evt.target.files[0];
               var reader = new FileReader();
@@ -243,7 +245,7 @@
                         /* Create a dictionary with the transaction date and transaction amount */
                         csvArray = data.slice(1, data.length);
                         _.each(csvArray, function(arr){
-                            chartData[arr[transactionDateColumn].split(' ')[0]] = parseInt(arr[transactionAmountColumn]);
+                            chartData['Revenue'][arr[transactionDateColumn].split(' ')[0]] = parseInt(arr[transactionAmountColumn]);
                         });
                         
                         
