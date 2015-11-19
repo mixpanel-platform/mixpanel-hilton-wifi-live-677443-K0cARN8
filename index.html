@@ -157,6 +157,7 @@
           if (eventName && _.keys(data).indexOf('Revenue') >= 0) {
 
             finalData[eventName] = {}
+            finalData['Revenue'] = {}
             
             resultData[eventName] = results.values()[eventName];
   
@@ -167,11 +168,11 @@
                   finalData[eventName][key] = resultData[key]
               });
               
-              debugger;
               _.each(_.keys(data['Revenue']), function(key){
+                debugger;
                   finalData['Revenue'][key] = data['Revenue'][key]
               });
-              debugger;
+
               eventGraph.MPChart('setData', finalData);
             }
             else {
